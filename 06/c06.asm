@@ -11,6 +11,37 @@ start:
 	mov cx, (start - mytext)/2
 	cld
 	rep movsw
+	;for caculating
+	mov cx, 5
+	mov ax, number
+	xor si, si
+	mov bx, 10
+	cwd
+	@digit:
+	xor dx, dx
+	div bx
+	add dl, 0x30
+	mov [number + si], dl
+	inc si
+	loop @digit
+	;for show in dec
+	mov cx, 5
+	;here si must dec,but di
+	;here si = 5, di = e
+	dec si
+	@show:
+	xor ax, ax
+	mov al, [number + si]
+	mov [es:di], al
+	inc di
+	mov byte [es:di], 0x04 
+	inc di
+	dec si
+	loop @show
+	jmp near $
+	
+
+
 
 	number db 0, 0, 0, 0, 0 
 	
