@@ -12,32 +12,30 @@ start:
 	cld
 	rep movsw
 	;for caculating
+	mov ax, 0x0
+	mov ss, ax 
+	mov sp, ax 
 	mov cx, 5
 	mov ax, number
 	xor si, si
 	mov bx, 10
-	cwd
 	@digit:
 	xor dx, dx
 	div bx
 	add dl, 0x30
-	mov [number + si], dl
+	mov dh, 0x04
+	;the num of pushing one is 16bit
+	push dx
 	inc si
 	loop @digit
 	;for show in dec
+	;the num of loop is important
+	;the num of pushing is 5 so popping si 5
 	mov cx, 5
-	;here si must dec,but di
-	;here si = 5, di = e
-	dec si
 	@show:
-	xor ax, ax
-	mov al, [number + si]
-	mov [es:di], al
-	inc di
-	mov byte [es:di], 0x04 
-	inc di
-	dec si
-	jns @show
+	pop word [es:di]
+	add di, 0x02
+	loop @show
 	jmp near $
 	
 
