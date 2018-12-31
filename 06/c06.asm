@@ -37,7 +37,7 @@ start:
 	mov byte [es:di], 0x04 
 	inc di
 	dec si
-	loop @show
+	jns @show
 	jmp near $
 	
 
