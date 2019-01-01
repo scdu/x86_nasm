@@ -1,5 +1,5 @@
 jmp near start
-mytext db 'm',0x07,'y',0x07,'t',0x07,'e',0x07,'s',0x07,'t',0x07,':', 0x04
+mytext db '1 + 2 + 3 + 4 + ......:'
 
 start:
 	mov ax, 0x7c0
@@ -8,16 +8,32 @@ start:
 	mov es, ax
 	mov si, mytext
 	mov di, 0 
-	mov cx, (start - mytext)/2
-	cld
-	rep movsw
+	mov cx, start - mytext
+	@show_label:
+	xor ax, ax
+	mov al, [si]
+	inc si
+	mov [es:di], al
+	inc di
+	mov byte [es:di], 0x07
+	inc di
+	loop @show_label
+	;here we caculating the sum of 1 + ....100
+	mov si, 1
+	mov cx, 100
+	xor ax, ax
+	@caculate:
+	add ax, si 
+	inc si 
+	;cmp  si, 100
+	;jle @caculate
+	loop @caculate
+	
 	;for caculating
-	mov ax, 0x0
-	mov ss, ax 
-	mov sp, ax 
+	mov bx, 0x0
+	mov ss, bx 
+	mov sp, bx 
 	mov cx, 5
-	mov ax, number
-	xor si, si
 	mov bx, 10
 	@digit:
 	xor dx, dx
@@ -26,11 +42,10 @@ start:
 	mov dh, 0x04
 	;the num of pushing one is 16bit
 	push dx
-	inc si
 	loop @digit
-	;for show in dec
-	;the num of loop is important
-	;the num of pushing is 5 so popping si 5
+	;;for show in dec
+	;;the num of loop is important
+	;;the num of pushing is 5 so popping si 5
 	mov cx, 5
 	@show:
 	pop word [es:di]
@@ -41,7 +56,7 @@ start:
 
 
 
-	number db 0, 0, 0, 0, 0 
+	;number db 0, 0, 0, 0, 0 
 	
 	
 
