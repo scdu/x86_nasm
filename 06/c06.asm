@@ -20,33 +20,34 @@ start:
 	loop @show_label
 	;here we caculating the sum of 1 + ....100
 	mov si, 1
-	mov cx, 100
 	xor ax, ax
 	@caculate:
 	add ax, si 
 	inc si 
-	;cmp  si, 100
-	;jle @caculate
-	loop @caculate
+	cmp  si, 100
+	jle @caculate
 	
 	;for caculating
 	mov bx, 0x0
 	mov ss, bx 
 	mov sp, bx 
-	mov cx, 5
+	;mov cx, 5
 	mov bx, 10
 	@digit:
+	inc cx
 	xor dx, dx
 	div bx
 	add dl, 0x30
 	mov dh, 0x04
 	;the num of pushing one is 16bit
 	push dx
-	loop @digit
+	cmp ax, 0
+	;loop @digit
+	jne @digit
 	;;for show in dec
 	;;the num of loop is important
 	;;the num of pushing is 5 so popping si 5
-	mov cx, 5
+	;mov cx, 5
 	@show:
 	pop word [es:di]
 	add di, 0x02
